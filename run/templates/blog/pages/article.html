@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% load blog_tags %}
+
+{% block title %}
+{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% include 'components/_sidebar.html' %}
+        <div class="col-9">
+            <div class="card">
+                {% if article.photo %}
+                <img src="{{ article.photo.url }}" class="card-img-top" alt="{{ article.title }}" height="600">
+                {% else %}
+                <h2>no photo</h2>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class=card-title"">{{ article.title }}</h5>
+                    <p class="card-text">{{ article.description}}</p>
+                </div>
+            </div>
+            <div class="cart-footer d-flex justify-content-between gap-3">
+                <div> views: {{ article.viewed }}</div>
+                <div>
+                    {% if article.author %}
+                    {{ article.author }}
+                    {% else %}
+                    Unknown
+                    {% endif %}
+                </div>
+
+            </div>
+
+            {% if request.user.is_authenticated and request.user == article.author or request.user.is_superuser %}
+            <div class="cart-footer d-flex justify-content-end gap-3">
+                <a href="{% url 'article_update' article.id %}" class="btn btn-warning">Edit</a>
+                <a href="{% ulr 'article_delete' %}" class="btn btn-danger">Delete</a>
+
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
